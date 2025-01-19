@@ -1,10 +1,8 @@
 ---
 title: "HFT 2025"
 author: "Nihad & Vikram"
-date: "`r Sys.Date()`"
 editor: visual
 date: "`r Sys.Date()`"
-engine: knitr
 format: 
   html:
     toc: true
@@ -33,46 +31,105 @@ library(knitr)
 
 ```
 
-## 1 Importing the data
-
-First, let's load necessary libraries:
-
-```{r cache = F}
-library(xts)
-library(quantmod)
-library(chron)
-library(urca) # for cointegration tests
-library(TTR)
-library(caTools)
-library(lubridate)
-library(lattice) # for levelplot()
-library(grDevices)
-library(dplyr) # for if_else()
-
-
-```
-
-Let's also load the additional function:
-
-```{r}
-source("https://raw.githubusercontent.com/ptwojcik/HFD/master/functions_plotHeatmap.R")
-
-source("functions/load_and_pre_process.R")
-source("functions/define_entry_exit.R")
-source("functions/execute_strategies.R")
-source("functions/define_daily_filters.R")
-source("functions/execute_one_at_a_time.R")
-```
-
 ## Approaches undertaken
 
-This part should describe **in short** what particular methods you used, all entry/exit techniques considered, all additional assumptions.
+### Group 1
 
-For **each group of assets separately** You should also explain **WHAT different parameters** you considered (e.g. memories of moving averages, types of moving averages, types of volatility measures, memory of volatility measures, types of additional indicators, memories of additional indicators, etc.), what (if any) additional filtering rules you applied.
+We used different EMAs with entry/exit based on double volatility breakout using mean reverting strategies. The best parameters in term of fast and flow moving averages we found 30, 90 with +- 4 times of 60 mins rolling sds for upper entry and lower entry. And +- 2 times of same 60 mins rolling sds for upper exit and lower exit.
 
-You should also explain with details **HOW** you searched for the best combination of parameters for a particular group of assets.
+We found the parameters on the basis of max sharpe ratio.
 
-## Finally selected strategy for **group 1**
+Second strategy we tried based on pair trading using average price spread and sds of returns based spread. In this additionaly first week of each quarter we used to iterate over various values of m, volat.sd for both types of spread and calculated the best paraters besed on highest SR ratio. We did this for each week and moved the time frame to one week. So first week generally there is no trade and following weeks based on last week best parameters pair trading was performed.
 
-Provide a **general summary** (approach and a set of **final parameters**) for assets from **group 1**. (e.g. momentum strategy, cross over of two exponential moving averages EMA10 and EMA60).
+### Finally selected strategy for **group 1**
 
+Finally for group 1 we selected pair trading with perious weeks best parameters used for running week.
+
+### Group 1 - 2022 first quarter results
+
+| gross SR    | net SR    | gross CR   | net CR    | gross cumP&L | net cumP&L | av.ntrades |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| -0.05446243 | -1.335636 | -0.1013886 | -1.978189 | -577.28      | -14452.74  | 4.644068   |
+
+: matrix {.striped .hover}
+
+![g1_q1_2022](images/g1_q1_2022.png)
+
+### Group 1 - 2022 third quarter results
+
+| gross SR   | net SR     | gross CR   | net CR    | gross cumP&L | net cumP&L | av.ntrades |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| -0.2735316 | -0.8866143 | -0.5287689 | -1.530431 | -2837.795    | -9247.564  | 2.166667   |
+
+: matrix {.striped .hover}
+
+![g1_q1_2022](images/g1_q3_2022.png)
+
+### Group 1 - 2022 fourth quarter results
+
+| gross SR | net SR   | gross CR | net CR  | gross cumP&L | net cumP&L | av.ntrades |
+|----------|----------|----------|---------|--------------|------------|------------|
+| 3.779882 | 2.572602 | 12.44741 | 7.09879 | 22419.65     | 14865.49   | 2.666667   |
+
+: matrix {.striped .hover}
+
+![g1_q1_2022](images/g1_q4_2022.png)
+
+### Group 1 - 2023 Second quarter results
+
+| gross SR | net SR | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
+|----------|--------|----------|----------|--------------|------------|------------|
+| 6.971348 | 5.2925 | 44.56767 | 27.48605 | 53970.73     | 40750.74   | 4.3        |
+
+: matrix {.striped .hover}
+
+![g1_q2_2023](images/g1_q2_2023.png)
+
+### Group 1 - 2023 fourth quarter results
+
+| gross SR | net SR   | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
+|----------|----------|----------|----------|--------------|------------|------------|
+| 4.22906  | 2.896901 | 27.14227 | 14.41213 | -2837.795    | 22088.17   | 2.271186   |
+
+: matrix {.striped .hover}
+
+![g1_q4_2023](images/g1_q4_2023.png)
+
+### Group 1 - 2024 first quarter results
+
+| gross SR | net SR    | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| 2.561474 | 0.8205267 | 4.890218 | 1.070789 | 12773.7      | 3430.214   | 2.866667   |
+
+: matrix {.striped .hover}
+
+![g1_q1_2024](images/g1_q1_2024.png)
+
+### Group 1 - 2024 second quarter results
+
+| gross SR  | net SR     | gross CR | net CR    | gross cumP&L | net cumP&L | av.ntrades |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| 0.8397483 | -0.8141622 | 2.26682  | -1.552525 | 4840.637     | -4716.803  | 2.933333   |
+
+: matrix {.striped .hover}
+
+![g1_q2_2024](images/g1_q2_2024.png)
+
+## Group 1 - 2022-2024 quarterly results
+
+| duration    | gross SR    | net SR      | gross CR    | net CR      | gross cumP&L   | net cumP&L   | av.ntrades   |
+|---------|---------|---------|---------|---------|---------|---------|---------|
+| 2022-Q1     | -0.05446243 | -1.335636   | -0.1013886  | -1.978189   | -577.28        | -14452.74    | 4.644068     |
+| ----------- | ----------- | ----------- | ----------- | ----------- | -----------    | -----------  | -----------  |
+| 2022-Q3     | -0.2735316  | -0.8866143  | -0.5287689  | -1.530431   | -2837.795      | -9247.564    | 2.166667     |
+| ----------- | ----------  | ----------  | ----------  | ---------   | -------------- | ------------ | ------------ |
+| 2022-Q4     | 3.779882    | 2.572602    | 12.44741    | 7.09879     | 22419.65       | 14865.49     | 2.666667     |
+| ----------- | ----------- | ----------- | ----------- | ----------- | -----------    | -----------  | -----------  |
+| 2023-Q2     | 6.971348    | 5.2925      | 44.56767    | 27.48605    | 53970.73       | 40750.74     | 4.3          |
+| ----------- | ----------- | ----------- | ----------- | ----------- | -----------    | -----------  | -----------  |
+| 2023-Q4     | 4.22906     | 2.896901    | 27.14227    | 14.41213    | -2837.795      | 22088.17     | 2.271186     |
+| ----------- | ----------- | ----------- | ----------- | ----------- | -----------    | -----------  | -----------  |
+| 2024-Q1     | 2.561474    | 0.8205267   | 4.890218    | 1.070789    | 12773.7        | 3430.214     | 2.866667     |
+| ----------- | ----------- | ----------- | ----------- | ----------- | -----------    | -----------  | -----------  |
+| 2024-Q2     | 0.8397483   | -0.8141622  | 2.26682     | -1.552525   | 4840.637       | -4716.803    | 2.933333     |
+: matrix {.striped .hover}

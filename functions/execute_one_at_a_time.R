@@ -48,7 +48,15 @@ execute_one_at_a_time <- function(data) {
   #spread_name <- coredata(data$spread.name)[1]
   spread_name <- as.numeric(data[temp,]$spread.name)
   strategy_name = "mr"
+  #message(paste0("\n index(data[temp,])=",index(data[temp,])," volat.sd = ", volat.sd, ", m_ = ", m_, " spread_name = ", spread_name, " strategy_name = ", strategy_name)) 
   message(paste0("\n volat.sd = ", volat.sd, ", m_ = ", m_, " spread_name = ", spread_name, " strategy_name = ", strategy_name)) 
+  #Handling for 25th Dec if there is only one row due to code not but not from original data
+  if (nrow(data)==1) {
+    result1 <- c(pnl.gross = NA, pnl.net = NA, ntrans = NA)
+    #result1 <- c(a="a")
+    #message("result " , result1)
+    return (result1)
+  }
   if (spread_name==1) {
     sname <- "spread_avratio"
   } else {
@@ -119,9 +127,9 @@ execute_one_at_a_time <- function(data) {
   #daily.pnls.xts <- xts(daily.pnls, days_)
   
   # lets delete objects that are not needed any more
-  #print(pnl.gross.d)
-  #print(pnl.net.d)
-  #print(sum(ntrans, na.rm = TRUE))
+  print(pnl.gross.d)
+  print(pnl.net.d)
+  print(sum(ntrans, na.rm = TRUE))
   
   result <- c(pnl.gross = as.numeric(pnl.gross.d),
               pnl.net = as.numeric(pnl.net.d), ntrans = as.numeric(sum(ntrans, na.rm = TRUE)))

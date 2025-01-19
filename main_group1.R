@@ -63,7 +63,7 @@ source("functions/define_daily_filters.R")
 source("functions/execute_one_at_a_time.R")
 
 
-data2 <- load_and_pre_process("data/data1_2022_Q4.RData")
+data2 <- load_and_pre_process("data/data1_2024_Q2.RData")
 daily.calc <- define_daily_filters(data2)
 daily.calc <- daily.calc[-nrow(daily.calc)]
 
@@ -90,9 +90,9 @@ max_sr <- period.apply(data2, INDEX = weeks_points,
 #org_sr <- max_sr
 #max_sr <- max_sr[wday(index(max_sr)) == 6]
 
-# q1 = 1, q3=26, q4=40
+# q1 = 1, q2=14, q3=26, q4=40
 
-excl_first_week_index <- index(data2[week(index(data2))!=40]) # need to check for other quarters
+excl_first_week_index <- index(data2[week(index(data2))!=14]) # need to check for other quarters
 
 
 #index(max_sr) <- index(org_sr) + 3 * 16.5 * 60 * 60
@@ -144,7 +144,9 @@ daily.pnls.xts <- merge(daily.pnls.xts, daily.calc)
 # for strategy using spread 1
 # without filtering
 # (exlude 1st day, as there was not trading yet)
-  
+
+av.daily.ntrans <- mean(daily.pnls.xts$ntrans, na.rm = TRUE)
+
 ann_gross_sr <- mySR(daily.pnls.xts$pnl.gross[-5],
      scale = 252)
 
