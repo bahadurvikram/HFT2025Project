@@ -77,7 +77,7 @@ execute_strategies <- function(data) {
          - coredata(data$sds.ratio) * diff.xts(SP_price) * 50 ) # point value for SP
       
       # pnl after  costs
-      # costs = 12$ for AAPL and 4$ for NASDAQ = (4+m*12) in total
+      # costs = 12$ for SP and 4$ for NQ = (4+m*12) in total
       # there is NO minus "-" in the costs - they are always positive !!!
       
       net.pnl <- gross.pnl - ntrans * (12 + coredata(data$av.ratio) * 12)
