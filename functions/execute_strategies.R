@@ -113,7 +113,7 @@ execute_strategies <- function(data) {
       av.daily.ntrans2 <- mean(ntrans2.d, na.rm = TRUE) 
       
       # summary of a particular strategy
-      summary_ <- data.frame(spread = "av.ratio",
+      summary_ <- data.frame(spread = "spread_avratio",
                              volat.sd = volat.sd,
                              m = m_,
                              period = "2022-01-03 - 2022-03",
@@ -124,7 +124,7 @@ execute_strategies <- function(data) {
                              av.daily.ntrans,
                              stringsAsFactors = FALSE)
       
-      summary2_ <- data.frame(spread = "sds.ratio",
+      summary2_ <- data.frame(spread = "spread_sdsratio",
                               volat.sd = volat.sd,
                               m = m_,
                               period = "2022-01-03 - 2022-03",
@@ -155,6 +155,20 @@ execute_strategies <- function(data) {
     } # end of loop for m_
   } # end of loop for volatility  
   
+  max_sr <- summary.pair.trading[which.max(summary.pair.trading$net.SR),]
+  print("rows")
+  print(nrow(max_sr))
+  if (nrow(max_sr)==0) {
+    result <- c( spread.name=NA , net.SR=NA, m = NA, volat.sd = NA)
+    return(result)
+  }
+  if (max_sr$spread=="spread_avratio") {
+    sname<-1
+  } else {
+    sname<-2
+  }
+  result <- c( spread.name=sname , net.SR=as.double(max_sr$net.SR), m = as.double(max_sr$m), volat.sd = as.double(max_sr$volat.sd))
   
-  return(summary.pair.trading)
+
+  return(result)
 }

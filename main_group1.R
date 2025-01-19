@@ -17,7 +17,6 @@
 
 
 #
-rm(list = ls())
 
 #install.packages("dplyr")
 #install.packages("xts")
@@ -33,7 +32,8 @@ library(urca) # for cointegration tests
 library(TTR)
 library(caTools)
 library(lubridate)
-
+#install.packages("tseries") # for maxdrawdown()
+library(tseries)
 # install.packages("dplyr")
 library(dplyr) # for if_else()
 
@@ -52,6 +52,8 @@ print(LOC_CODE)
 ## Set it as current working directory
 setwd(LOC_CODE)
 
+rm(list = ls())
+
 source("https://raw.githubusercontent.com/ptwojcik/HFD/master/functions_plotHeatmap.R")
 
 source("functions/load_and_pre_process.R")
@@ -61,26 +63,71 @@ source("functions/define_daily_filters.R")
 source("functions/execute_one_at_a_time.R")
 
 
-data2 <- load_and_pre_process("data/data1_2022_Q1.RData")
+data2 <- load_and_pre_process("data/data1_2022_Q4.RData")
 daily.calc <- define_daily_filters(data2)
+daily.calc <- daily.calc[-nrow(daily.calc)]
+
+#fid av.ratio, sds.ratio and respective spread for both prices and returns
 data2 <- define_entry_exit(data2)
-summary.pair.trading <- execute_strategies(data2)
-
-#options(digits = 9)
-# 25 av.ratio       90 3 2022-01-03 - 2022-03 5.899015 5.327766  71275.63 64315.87        2.092308
-max_sr <- summary.pair.trading[which.max(summary.pair.trading$net.SR),]
-if (max_sr["spread"]=='av.ratio') { spread_name <- "spread_avratio"}
-if (max_sr["spread"]=='sds.ratio') { spread_name <- "spread_sdsratio"}
-volat.sd <- max_sr["volat.sd"]
-m <- as.numeric(max_sr["m"])
-
-daily.pnls.xts <- execute_one_at_a_time(data2, volat.sd, m, spread_name, "mr")
+data2 <- data2[-nrow(data2)]
 
 
-# lets put it together with daily filtering calculations
-#index(daily.calc)
-#index(daily.pnls.xts)
+#start_date <- as.Date(index(data2)[1])
+#end_date <- start_date+20
+
+#rm(test_data)
+#test_data <- data2[paste0(start_date, "/", end_date)]
+
+weeks_points <- endpoints(data2, "weeks")
+
+rm(max_sr)
+
+max_sr <- period.apply(data2, INDEX = weeks_points, 
+                            FUN = execute_strategies)
+
+#last_date <- end(data2)
+#max_sr <- org_sr
+#org_sr <- max_sr
+#max_sr <- max_sr[wday(index(max_sr)) == 6]
+
+# q1 = 1, q3=26, q4=40
+
+excl_first_week_index <- index(data2[week(index(data2))!=40]) # need to check for other quarters
+
+
+#index(max_sr) <- index(org_sr) + 3 * 16.5 * 60 * 60
+index(max_sr) <- index(max_sr) + (2 * 24 * 60 * 60 + .75*24*60*60 - 60*30)
+
+
+#first_date <-start(max_sr)
+
+max_sr <- max_sr[-nrow(max_sr)]
+
+
+#daily_dates <- seq(from = first_date, to = last_date, by = "min")
+test1 <- merge(max_sr,excl_first_week_index)
+
+# Filled the missing with last non-missing values
+test1$spread.name <- na.locf(test1$spread.name)
+test1$m <- na.locf(test1$m)
+test1$volat.sd <- na.locf(test1$volat.sd)
+test1$net.SR <- na.locf(test1$net.SR)
+
+data2 <- merge(data2, test1)
+
+#data2["T09:30/T09:40",] <- NA 
+#data2["T15:51/T16:00",] <- NA
+
+day_points <- endpoints(data2, "days")
+
+rm(daily.pnls.xts)
+
+daily.pnls.xts <- period.apply(data2, INDEX = day_points, 
+                       FUN = execute_one_at_a_time)
+
 # we need to remove hours from this index too
+index(daily.pnls.xts) <- as_date(index(daily.pnls.xts))
+
 index(daily.calc) <- as_date(index(daily.calc))
 
 # then we can apply merging
@@ -88,30 +135,6 @@ daily.pnls.xts <- merge(daily.pnls.xts, daily.calc)
 
 
 
-# lets see the results on the heatmap graph
-
-# net.SR - spread av_ratio
-plotHeatmap(data_plot = summary.pair.trading[summary.pair.trading$spread == "av.ratio",], # dataset (data.frame) with calculations
-            col_vlabels = "volat.sd", # column name with the labels for a vertical axis (string)
-            col_hlabels = "m", # column name with the labels for a horizontal axis (string)
-            col_variable = "net.SR", # column name with the variable to show (string)
-            main = "Sensitivity analysis for pair trading - spread based on prices ratio")
-
-# net.Pnl - spread av_ratio
-plotHeatmap(data_plot = summary.pair.trading[summary.pair.trading$spread == "av.ratio",], # dataset (data.frame) with calculations
-            col_vlabels = "volat.sd", # column name with the labels for a vertical axis (string)
-            col_hlabels = "m", # column name with the labels for a horizontal axis (string)
-            col_variable = "net.PnL", # column name with the variable to show (string)
-            main = "Sensitivity analysis for pair trading - spread based on prices ratio")
-
-
-# av.daily.ntrans
-plotHeatmap(data_plot = summary.pair.trading[summary.pair.trading$spread == "av.ratio",], # dataset (data.frame) with calculations
-            col_vlabels = "volat.sd", # column name with the labels for a vertical axis (string)
-            col_hlabels = "m", # column name with the labels for a horizontal axis (string)
-            col_variable = "av.daily.ntrans", # column name with the variable to show (string)
-            main = "Sensitivity analysis for pair trading - spread based on prices ratio",
-            label_size = 4)
 
 ############################################################
 # applying filteration of cointegration
@@ -122,12 +145,29 @@ plotHeatmap(data_plot = summary.pair.trading[summary.pair.trading$spread == "av.
 # without filtering
 # (exlude 1st day, as there was not trading yet)
   
-mySR(daily.pnls.xts$pnl.gross[-1],
+ann_gross_sr <- mySR(daily.pnls.xts$pnl.gross[-5],
      scale = 252)
 
-mySR(daily.pnls.xts$pnl.net[-1], 
+ann_net_sr <- mySR(daily.pnls.xts$pnl.net[-5], 
      scale = 252)
   
+myCalmarRatio <- function(x, # x = series of returns
+                          # scale parameter = Nt
+                          scale) {
+  scale * mean(coredata(x), na.rm = TRUE) / 
+    maxdrawdown(cumsum(x))$maxdrawdown
+  
+} # end of definition
+
+# sample column 
+ann_gross_cr <- myCalmarRatio(daily.pnls.xts$pnl.gross[!is.na(daily.pnls.xts$pnl.gross)],
+              scale = 252)
+
+ann_net_cr <-myCalmarRatio(daily.pnls.xts$pnl.net[!is.na(daily.pnls.xts$pnl.net)],
+              scale = 252)
+
+gross_cumPnL <- tail(cumsum(daily.pnls.xts$pnl.gross[!is.na(daily.pnls.xts$pnl.gross)]),1)
+net_cumPnL <- tail(cumsum(daily.pnls.xts$pnl.net[!is.na(daily.pnls.xts$pnl.net)]),1)
 
 # pnl plot
 
@@ -137,12 +177,12 @@ myTheme$col$line.col <- "darkblue"
 
 par(mfrow = c(3, 2), mar = c(4, 4, 2, 1))  # This sets the margins
 
-chart_Series(cumsum(daily.pnls.xts$pnl.gross[-1]), 
+chart_Series(cumsum(daily.pnls.xts$pnl.gross[!is.na(daily.pnls.xts$pnl.gross)]), 
              theme = myTheme)
 par(mfrow = c(1, 1))  # This resets the margins
 
 
-add_TA(cumsum(daily.pnls.xts$pnl.net[-1]), 
+add_TA(cumsum(daily.pnls.xts$pnl.net[!is.na(daily.pnls.xts$pnl.net)]), 
        col = "red", 
        on = 1)
   
@@ -171,29 +211,47 @@ par(mfrow = c(1, 1))  # This resets the margins
 # if cointergration => trade (take calculated pnl),
 # otherwise don't (take 0)
 
-gross1_filtered <- ifelse(daily.pnls.xts$KPSS.stat <
-                            daily.pnls.xts$KPSS.cval.1pct,
-                          daily.pnls.xts$pnl.gross1, 0)
+# apply only if net pnl is negative
+if (net_cumPnL < 0) {
 
-net1_filtered <- ifelse(daily.pnls.xts$KPSS.stat <
-                          daily.pnls.xts$KPSS.cval.1pct,
-                        daily.pnls.xts$pnl.net1, 0)
+  gross1_filtered <- ifelse(daily.pnls.xts$KPSS.stat <
+                            daily.pnls.xts$KPSS.cval.5pct,
+                          daily.pnls.xts$pnl.gross, 0)
+
+  net1_filtered <- ifelse(daily.pnls.xts$KPSS.stat <
+                          daily.pnls.xts$KPSS.cval.5pct,
+                        daily.pnls.xts$pnl.net, 0)
+  gross1_filtered[is.na(gross1_filtered)] <- 0
+  net1_filtered[is.na(net1_filtered)] <- 0
+  
+  mySR(gross1_filtered[-1],
+       scale = 252)
+  
+  mySR(net1_filtered[-1], 
+       scale = 252)
+  }
+
 
 
 # replace every missing value with 0)
 
-gross1_filtered[is.na(gross1_filtered)] <- 0
-net1_filtered[is.na(net1_filtered)] <- 0
 
-mySR(gross1_filtered[-1],
-     scale = 252)
-
-mySR(net1_filtered[-1], 
-     scale = 252)
 
 # pnl plot
-chart_Series(cumsum(gross1_filtered[-1]), 
+chart_Series(cumsum(gross1_filtered), 
              theme = myTheme)
 add_TA(cumsum(net1_filtered[-1]), 
        col = "red", 
        on = 1)
+
+########################################
+# Preparing performance matrix
+#########################################
+# gross SR – annualized Sharpe ratio based on gross daily P&L (without transaction costs, denoted in monetary terms),
+# net SR – annualized Sharpe ratio based on net daily P&L (with transaction costs included, denoted in monetary terms),
+# gross CR – annualized Calmar ratio based on gross daily P&L (without transaction costs, denoted in monetary terms),
+# net CR – annualized Calmar ratio based on net daily P&L (with transaction costs included, denoted in monetary terms),
+# gross cumP&L – cumulative profit and loss at the end of the investment period (last value of the cumP&L series) without transaction costs, denoted in monetary terms,
+# net cumP&L – cumulative profit and loss at the end of the investment period (last value of the cumP&L series) with transaction costs included, denoted in monetary terms,
+# av.ntrades – average daily number of trades.
+

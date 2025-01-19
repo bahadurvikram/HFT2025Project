@@ -61,10 +61,19 @@ define_daily_filters <- function(data) {
   ####################################################################
   # p-value of regression coefficient between R1 and R2
   
+  lmcoef <- function(x) {
+    coef <- summary(lm(NQ.return~SP.return - 1,
+               data = x))$coefficients
+    print(coef)
+    if (nrow(coef)==0) {
+      return (NA)
+    }
+    return (coef[1,4])
+  } 
+  
   US.regR.p <- period.apply(data,
                             INDEX = my.endpoints,
-                            function(x) summary(lm(NQ.return~SP.return - 1,
-                                                   data = x))$coefficients[1, 4]
+                            FUN = lmcoef
   )
   
   names(US.regR.p) <- "regR.p"
@@ -72,12 +81,20 @@ define_daily_filters <- function(data) {
 
   ####################################################################
   # correlation coefficient between P1 and P2
+  cor_loc <- function(x) {
+    cortp <- cor(x$SP.close, 
+                x$NQ.close,
+                use = "complete.obs")
+    print(cortp)
+    if (is.null(cortp) || nrow(cortp)==0) {
+      return (NA)
+    }
+    return (cortp)
+  } 
   
   US.corP <- period.apply(data,
                           INDEX = my.endpoints,
-                          function(x) cor(x$SP.close, 
-                                          x$NQ.close,
-                                          use = "complete.obs"))
+                          FUN=cor_loc)
   
   names(US.corP) <- "corP"
   
