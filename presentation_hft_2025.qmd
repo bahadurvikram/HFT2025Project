@@ -22,12 +22,13 @@ format:
 ---
 
 ```{r setup, include=FALSE}
+library(knitr)
+
 knitr::opts_chunk$set(echo    = TRUE, 
-                      cache   = FALSE, #https://yihui.org/knitr/options/#cache
+                      cache   = FALSE,
                       message = FALSE, 
                       warning = FALSE)
 options(scipen = 10)
-library(knitr)
 
 ```
 
@@ -43,16 +44,17 @@ Second strategy we tried based on pair trading using average closing price sprea
 
 Finally for group 1 we selected pair trading with previous weeks best parameters used for running week.
 
-Sample parameters estimations for **2024 Quarter 2**
-(spread.name 1 (spread_avratio) and 2 (spread_sdsratio))
+Sample parameters estimations for **2024 Quarter 2** (spread.name 1 (spread_avratio) and 2 (spread_sdsratio))
 
-![best_parameters_2024_q2](images/best_parameters_2024_q2.png){width=70%} 
+![best_parameters_2024_q2](images/best_parameters_2024_q2.png){width="70%"}
 
 ### Group 1 - 2022 first quarter results
 
++-------------+-----------+------------+-----------+--------------+------------+------------+
 | gross SR    | net SR    | gross CR   | net CR    | gross cumP&L | net cumP&L | av.ntrades |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
++=============+===========+============+===========+==============+============+============+
 | -0.05446243 | -1.335636 | -0.1013886 | -1.978189 | -577.28      | -14452.74  | 4.644068   |
++-------------+-----------+------------+-----------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -60,9 +62,11 @@ Sample parameters estimations for **2024 Quarter 2**
 
 ### Group 1 - 2022 third quarter results
 
++------------+------------+------------+-----------+--------------+------------+------------+
 | gross SR   | net SR     | gross CR   | net CR    | gross cumP&L | net cumP&L | av.ntrades |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
++============+============+============+===========+==============+============+============+
 | -0.2735316 | -0.8866143 | -0.5287689 | -1.530431 | -2837.795    | -9247.564  | 2.166667   |
++------------+------------+------------+-----------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -70,9 +74,11 @@ Sample parameters estimations for **2024 Quarter 2**
 
 ### Group 1 - 2022 fourth quarter results
 
++----------+----------+----------+---------+--------------+------------+------------+
 | gross SR | net SR   | gross CR | net CR  | gross cumP&L | net cumP&L | av.ntrades |
-|----------|----------|----------|---------|--------------|------------|------------|
++==========+==========+==========+=========+==============+============+============+
 | 3.779882 | 2.572602 | 12.44741 | 7.09879 | 22419.65     | 14865.49   | 2.666667   |
++----------+----------+----------+---------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -80,9 +86,11 @@ Sample parameters estimations for **2024 Quarter 2**
 
 ### Group 1 - 2023 Second quarter results
 
-| gross SR | net SR | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
-|----------|--------|----------|----------|--------------|------------|------------|
-| 6.971348 | 5.2925 | 44.56767 | 27.48605 | 53970.73     | 40750.74   | 4.3        |
++----------+---------+----------+----------+--------------+------------+------------+
+| gross SR | net SR  | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
++==========+=========+==========+==========+==============+============+============+
+| 6.971348 | 5.2925  | 44.56767 | 27.48605 | 53970.73     | 40750.74   | 4.3        |
++----------+---------+----------+----------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -90,9 +98,11 @@ Sample parameters estimations for **2024 Quarter 2**
 
 ### Group 1 - 2023 fourth quarter results
 
++------------+-----------+------------+----------+--------------+------------+------------+
 | gross SR   | net SR    | gross CR   | net CR   | gross cumP&L | net cumP&L | av.ntrades |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
++============+===========+============+==========+==============+============+============+
 | 3.77988163 | 2.5726020 | 12.4474066 | 7.098790 | 22419.653    | 14865.495  | 2.666667   |
++------------+-----------+------------+----------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -100,9 +110,11 @@ Sample parameters estimations for **2024 Quarter 2**
 
 ### Group 1 - 2024 first quarter results
 
++----------+-----------+----------+----------+--------------+------------+------------+
 | gross SR | net SR    | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
++==========+===========+==========+==========+==============+============+============+
 | 2.561474 | 0.8205267 | 4.890218 | 1.070789 | 12773.7      | 3430.214   | 2.866667   |
++----------+-----------+----------+----------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -110,9 +122,11 @@ Sample parameters estimations for **2024 Quarter 2**
 
 ### Group 1 - 2024 second quarter results
 
++-----------+------------+----------+-----------+--------------+------------+------------+
 | gross SR  | net SR     | gross CR | net CR    | gross cumP&L | net cumP&L | av.ntrades |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
++===========+============+==========+===========+==============+============+============+
 | 0.8397483 | -0.8141622 | 2.26682  | -1.552525 | 4840.637     | -4716.803  | 2.933333   |
++-----------+------------+----------+-----------+--------------+------------+------------+
 
 : matrix {.striped .hover}
 
@@ -131,4 +145,105 @@ knitr::kable(data)
 
 ```
 
-------------------------------------------------------------------------
+## Approaches undertaken
+
+### Group 2
+
+We used the different strategies including and excluding some assets. First of all, we tried based on pair trading using average closing price spread and standard deviation of returns based on spread dividing pairs by currencies(CAD&AUD) and metals(XAU&XAG). The results were not satisfactory.
+
+Secondly, from fundamental perspective, we decided to omit CAD since It has positive relationship with USD which has negative relationship with XAU and It has similar trend pattern with AUD. In our strategy, we used momentum approach using 30 and 90 SMA for AUD and pair of XAU&XAG.
+
+### Group 2- 2022 first quarter results
+
++--------------+--------------+--------------+--------------+--------------+--------------+--------------+
+| gross SR     | net SR       | gross CR     | net CR       | gross cumP&L | net cumP&L   | av.ntrades   |
++==============+==============+==============+==============+==============+==============+==============+
+| ```          | ```          | ```          | ```          | ```          | ```          | ```          |
+| -0.08796367  | -0.3203243   | -0.1287973   | -0.4405723   | -59418.29    | -215532.6    | 4.611111     |
+| ```          | ```          | ```          | ```          | ```          | ```          | ```          |
++--------------+--------------+--------------+--------------+--------------+--------------+--------------+
+
+![g2_q1_2022](images/2022_Q1plot.png)
+
+In the first quarter of 2022, our strategy concluded with negative PnL due to high volatility and Its stat value is -2.3672.
+
+### Group 2 - 2022 third quarter results
+
++--------------+--------------+--------------+--------------+--------------+--------------+--------------+
+| gross SR     | net SR       | gross CR     | net CR       | gross cumP&L | net cumP&L   | av.ntrades   |
++==============+==============+==============+==============+==============+==============+==============+
+| ```          | ```          | ```          | ```          | ```          | ```          | ```          |
+| 1.00793395   | 0.7994004    |  2.2682883   | 1.6832033    | 838372.21    | 661778.9     | 4.763441     |
+| ```          | ```          | ```          | ```          | ```          | ```          | ```          |
++--------------+--------------+--------------+--------------+--------------+--------------+--------------+
+
+![g2_q3_2022](images/2022_Q3plot.png) In the third quarter of 2022, our strategy concluded with profit and Its stat value is 10,9323.
+
+### Group 2 - 2022 fourth quarter results
+
++--------------+--------------+--------------+--------------+--------------+--------------+--------------+
+| gross SR     | net SR       | gross CR     | net CR       | gross cumP&L | net cumP&L   | av.ntrades   |
++==============+==============+==============+==============+==============+==============+==============+
+| ```          | ```          | ```          | ```          | ```          | ```          | ```          |
+| -0.28367666  | -0.4872866   | -0.5528670   | -0.9162963   | -238877.84   | -408326.5    | 4.901099     |
+| ```          | ```          | ```          | ```          | ```          | ```          | ```          |
++--------------+--------------+--------------+--------------+--------------+--------------+--------------+
+
+![g2_q4_2022](images/2022_Q4plot.png)
+
+In the 4th quarter of 2022, our strategy was unsuccesfull, so Its stat value is -5.5088.
+
+### Group 2 - 2023 Second quarter results
+
++----------+--------+----------+--------+--------------+--------------+------------+
+| gross SR | net SR | gross CR | net CR | gross cumP&L | net cumP&L   | av.ntrades |
++==========+========+==========+========+==============+==============+============+
+| 1.8115   | 1.5756 | 4.3407   | 3.6753 | 1243477.0309 | 1070183.7479 | 5.1556     |
++----------+--------+----------+--------+--------------+--------------+------------+
+
+![g2_q2_2023](images/2023_Q2plot.png)
+
+In the second quarter of 2023, our stratgey concluded with success and its stat value 25.6372.
+
+### Group 2 - 2023 Fourth quarter results
+
++----------+--------+----------+--------+--------------+-------------+------------+
+| gross SR | net SR | gross CR | net CR | gross cumP&L | net cumP&L  | av.ntrades |
++==========+========+==========+========+==============+=============+============+
+| 0.4194   | 0.1852 | 0.9724   | 0.4112 | 323969.7207  | 142276.2714 | 5.0444     |
++----------+--------+----------+--------+--------------+-------------+------------+
+
+![g2_q4_2023](images/2023_Q4plot.png)
+
+In the fiurth quarter of 2023, our strategy was successfull with 2.0388 stat value.
+
+### Group 2 - 2024 First quarter results
+
++----------+---------+----------+---------+--------------+--------------+------------+
+| gross SR | net SR  | gross CR | net CR  | gross cumP&L | net cumP&L   | av.ntrades |
++==========+=========+==========+=========+==============+==============+============+
+| -0.1721  | -0.4597 | -0.4496  | -1.0528 | -103307.4365 | -274562.6246 | 4.6957     |
++----------+---------+----------+---------+--------------+--------------+------------+
+
+![g2_q1_2024](images/2024_Q1plot.png) In the first quarter of 2024, our strategy concluded with negative PnL and Its stat value is -5,9118.
+
+### Group 2 - 2024 Second quarter results
+
++----------+---------+----------+--------+--------------+--------------+------------+
+| gross SR | net SR  | gross CR | net CR | gross cumP&L | net cumP&L   | av.ntrades |
++==========+=========+==========+========+==============+==============+============+
+| 1.1043   | 0.98689 | 1.8792   | 1.662  | 1670146.1874 | 1487773.1757 | 5.0326     |
++----------+---------+----------+--------+--------------+--------------+------------+
+
+![g2_q2_2024](images/2024_Q2plot.png) In the second quarter of 2024, our strategy concluded with positive PnL and Its stat value is 12.1413.
+
+## Group 2 - 2022-2024 quarterly results
+
+```{r}
+data1 <- read.csv("quarter_stats.all.group2.csv")
+```
+
+```{r}
+#| echo: false
+data1
+```
