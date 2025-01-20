@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Nihad &amp; Vikram">
-<meta name="dcterms.date" content="2025-01-19">
+<meta name="dcterms.date" content="2025-01-20">
 
 <title>HFT 2025</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -87,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 19, 2025</p>
+      <p class="date">January 20, 2025</p>
     </div>
   </div>
   
@@ -101,12 +135,19 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="approaches-undertaken">Approaches undertaken</h2>
 <section id="group-1" class="level3">
 <h3 class="anchored" data-anchor-id="group-1">Group 1</h3>
-<p>We used different SMA with entry/exit based on double volatility breakout using mean reverting strategies. The parameters in term of fast and slow moving averages we tried 60, 90, 120, 150 etc with various upper and lower rolling sds to define entry and entry. But we did not found the SR ration and net PnL very interesting.</p>
+<p>We used different SMA with entry/exit based on double volatility breakout using mean reverting strategies. The parameters in term of fast and slow moving averages we tried 60, 90, 120, 150 etc with various upper and lower rolling sds to define entry and entry. But we did not find the SR ration and net PnL very interesting.</p>
 <p>Second strategy we tried based on pair trading using average closing price spread and sds of returns based spread. In this additionally first week of each quarter we used to iterate over various values of m, volat.sd for both types of spread and calculated the best parameters based on highest SR ratio. We did this for each week and moved the time frame to next week. So first week generally there is no trade and following weeks based on last week best parameters pair trading was performed.</p>
 </section>
 <section id="finally-selected-strategy-for-group-1" class="level3">
 <h3 class="anchored" data-anchor-id="finally-selected-strategy-for-group-1">Finally selected strategy for <strong>group 1</strong></h3>
 <p>Finally for group 1 we selected pair trading with previous weeks best parameters used for running week.</p>
+<p>Sample parameters estimations for <strong>2024 Quarter 2</strong> (spread.name 1 (spread_avratio) and 2 (spread_sdsratio))</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/best_parameters_2024_q2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">best_parameters_2024_q2</figcaption>
+</figure>
+</div>
 </section>
 <section id="group-1---2022-first-quarter-results" class="level3">
 <h3 class="anchored" data-anchor-id="group-1---2022-first-quarter-results">Group 1 - 2022 first quarter results</h3>
@@ -285,13 +326,13 @@ ul.task-list li input[type="checkbox"] {
 <table class="table-striped table-hover table">
 <caption>matrix</caption>
 <colgroup>
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 17%">
-<col style="width: 15%">
-<col style="width: 15%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -306,13 +347,13 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>4.22906</td>
-<td>2.896901</td>
-<td>27.14227</td>
-<td>14.41213</td>
-<td>-2837.795</td>
-<td>22088.17</td>
-<td>2.271186</td>
+<td>3.77988163</td>
+<td>2.5726020</td>
+<td>12.4474066</td>
+<td>7.098790</td>
+<td>22419.653</td>
+<td>14865.495</td>
+<td>2.666667</td>
 </tr>
 </tbody>
 </table>
@@ -412,109 +453,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="group-1---2022-2024-quarterly-results" class="level2">
 <h2 class="anchored" data-anchor-id="group-1---2022-2024-quarterly-results">Group 1 - 2022-2024 quarterly results</h2>
-<table class="table-striped table-hover table">
-<caption></caption>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the CSV file</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"final_results.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the table</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
 <colgroup>
+<col style="width: 2%">
 <col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 9%">
 <col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>duration</th>
-<th>gross SR</th>
-<th>net SR</th>
-<th>gross CR</th>
-<th>net CR</th>
-<th>gross cumP&amp;L</th>
-<th>net cumP&amp;L</th>
-<th>av.ntrades</th>
+<th style="text-align: right;">X</th>
+<th style="text-align: left;">Quarter.Name</th>
+<th style="text-align: right;">Gross.SR</th>
+<th style="text-align: right;">Net.SR</th>
+<th style="text-align: right;">Gross.CR</th>
+<th style="text-align: right;">Net.CR</th>
+<th style="text-align: right;">Gross.cumP.L</th>
+<th style="text-align: right;">Net.cumP.L</th>
+<th style="text-align: right;">Av.ntrades</th>
+<th style="text-align: right;">Stat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>2022-Q1</td>
-<td>-0.05446243</td>
-<td>-1.335636</td>
-<td>-0.1013886</td>
-<td>-1.978189</td>
-<td>-577.28</td>
-<td>-14452.74</td>
-<td>4.644068</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2022_Q1</td>
+<td style="text-align: right;">-0.0544624</td>
+<td style="text-align: right;">-1.3356356</td>
+<td style="text-align: right;">-0.1013886</td>
+<td style="text-align: right;">-1.978188</td>
+<td style="text-align: right;">-577.280</td>
+<td style="text-align: right;">-14452.735</td>
+<td style="text-align: right;">4.644068</td>
+<td style="text-align: right;">-5.283512</td>
 </tr>
 <tr class="even">
-<td>2022-Q3</td>
-<td>-0.2735316</td>
-<td>-0.8866143</td>
-<td>-0.5287689</td>
-<td>-1.530431</td>
-<td>-2837.795</td>
-<td>-9247.564</td>
-<td>2.166667</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2022_Q3</td>
+<td style="text-align: right;">-0.2735316</td>
+<td style="text-align: right;">-0.8866143</td>
+<td style="text-align: right;">-0.5287689</td>
+<td style="text-align: right;">-1.530431</td>
+<td style="text-align: right;">-2837.795</td>
+<td style="text-align: right;">-9247.564</td>
+<td style="text-align: right;">2.166667</td>
+<td style="text-align: right;">-3.404230</td>
 </tr>
 <tr class="odd">
-<td>2022-Q4</td>
-<td>3.779882</td>
-<td>2.572602</td>
-<td>12.44741</td>
-<td>7.09879</td>
-<td>22419.65</td>
-<td>14865.49</td>
-<td>2.666667</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2022_Q4</td>
+<td style="text-align: right;">3.7798816</td>
+<td style="text-align: right;">2.5726020</td>
+<td style="text-align: right;">12.4474066</td>
+<td style="text-align: right;">7.098790</td>
+<td style="text-align: right;">22419.653</td>
+<td style="text-align: right;">14865.495</td>
+<td style="text-align: right;">2.666667</td>
+<td style="text-align: right;">19.159937</td>
 </tr>
 <tr class="even">
-<td>2023-Q2</td>
-<td>6.971348</td>
-<td>5.2925</td>
-<td>44.56767</td>
-<td>27.48605</td>
-<td>53970.73</td>
-<td>40750.74</td>
-<td>4.3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">2023_Q2</td>
+<td style="text-align: right;">6.9713478</td>
+<td style="text-align: right;">5.2925002</td>
+<td style="text-align: right;">44.5676697</td>
+<td style="text-align: right;">27.486047</td>
+<td style="text-align: right;">53970.728</td>
+<td style="text-align: right;">40750.735</td>
+<td style="text-align: right;">4.300000</td>
+<td style="text-align: right;">101.903802</td>
 </tr>
 <tr class="odd">
-<td>2023-Q4</td>
-<td>4.22906</td>
-<td>2.896901</td>
-<td>27.14227</td>
-<td>14.41213</td>
-<td>-2837.795</td>
-<td>22088.17</td>
-<td>2.271186</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">2023_Q4</td>
+<td style="text-align: right;">4.2290601</td>
+<td style="text-align: right;">2.8969007</td>
+<td style="text-align: right;">27.1422746</td>
+<td style="text-align: right;">14.412131</td>
+<td style="text-align: right;">22088.172</td>
+<td style="text-align: right;">14856.988</td>
+<td style="text-align: right;">2.271186</td>
+<td style="text-align: right;">38.890707</td>
 </tr>
 <tr class="even">
-<td>2024-Q1</td>
-<td>2.561474</td>
-<td>0.8205267</td>
-<td>4.890218</td>
-<td>1.070789</td>
-<td>12773.7</td>
-<td>3430.214</td>
-<td>2.866667</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">2024_Q1</td>
+<td style="text-align: right;">2.5614741</td>
+<td style="text-align: right;">0.8205267</td>
+<td style="text-align: right;">4.8902179</td>
+<td style="text-align: right;">1.070790</td>
+<td style="text-align: right;">12773.703</td>
+<td style="text-align: right;">3430.214</td>
+<td style="text-align: right;">2.866667</td>
+<td style="text-align: right;">1.319879</td>
 </tr>
 <tr class="odd">
-<td>2024-Q2</td>
-<td>0.8397483</td>
-<td>-0.8141622</td>
-<td>2.26682</td>
-<td>-1.552525</td>
-<td>4840.637</td>
-<td>-4716.803</td>
-<td>2.933333</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">2024_Q2</td>
+<td style="text-align: right;">0.8397483</td>
+<td style="text-align: right;">-0.8141622</td>
+<td style="text-align: right;">2.2668195</td>
+<td style="text-align: right;">-1.552525</td>
+<td style="text-align: right;">4840.637</td>
+<td style="text-align: right;">-4716.803</td>
+<td style="text-align: right;">2.933333</td>
+<td style="text-align: right;">-2.408170</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 <hr>
-<p><strong><em>NetCR = 45.00661</em></strong></p>
-<p><strong><em>NetPnL = 52717.51</em></strong></p>
-<p>𝑠𝑡𝑎𝑡=𝑛𝑒𝑡𝐶𝑅∗𝑚𝑎𝑥(0,𝑙𝑜𝑔(𝑎𝑏𝑠(𝑛𝑒𝑡.𝑃𝑛𝐿/1000)))</p>
-<p>stat = 45.00661 * log(52.71751)</p>
-<p><strong>stat = 178.4489</strong></p>
 </section>
 
 </main>

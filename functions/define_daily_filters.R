@@ -60,7 +60,7 @@ define_daily_filters <- function(data) {
   
   ####################################################################
   # p-value of regression coefficient between R1 and R2
-  
+  # coef values are empty in case of 25th Dec data
   lmcoef <- function(x) {
     coef <- summary(lm(NQ.return~SP.return - 1,
                data = x))$coefficients
@@ -81,6 +81,7 @@ define_daily_filters <- function(data) {
 
   ####################################################################
   # correlation coefficient between P1 and P2
+  # cor values are empty in case of 25th Dec data
   cor_loc <- function(x) {
     cortp <- cor(x$SP.close, 
                 x$NQ.close,
