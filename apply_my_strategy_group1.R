@@ -63,7 +63,7 @@ source("functions/execute_one_at_a_time.R")
 
 final_results <- data.frame()
 
-files_list <- c("2022_Q1", "2022_Q3", "2022_Q4", "2023_Q2", "2023_Q4", "2024_Q1", "2024_Q2") 
+files_list <- c("2022_Q2", "2023_Q1", "2023_Q3", "2024_Q3", "2024_Q4") 
 
 for (quarter_name in files_list) {
   ###############################################

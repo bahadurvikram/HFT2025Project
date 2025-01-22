@@ -1,6 +1,6 @@
 ---
-title: "HFT 2025"
-author: "Nihad & Vikram"
+title: "Quantitative strategies on High Frequency Data - 2025"
+author: "Nihad Alili (466258) & Vikram Bahadur (4666547)"
 editor: visual
 date: "`r Sys.Date()`"
 format: 
@@ -32,111 +32,54 @@ options(scipen = 10)
 
 ```
 
-## Approaches undertaken
+### Group 1 - Final Strategy - Pair Trading
 
-### Group 1
+Considering the NASDAQ index future price and S&P 500 index future price represent the same returns on short/long run. If there is any change it should be temporary and should return back to earlier spread. So pair tradindin with mean reverting.
 
-We used different SMA with entry/exit based on double volatility breakout using mean reverting strategies. The parameters in term of fast and slow moving averages we tried 60, 90, 120, 150 etc with various upper and lower rolling sds to define entry and entry. But we did not find the SR ration and net PnL very interesting.
+We used mean reverting pair trading using previous day average closing price ratio based spread and sds (standard deviation) ratios of returns based spread. Initially we tried different combination of entry/exit parameters and found that parameters those fit very well for particular dataset does not mean to fit significantly for the different data set. This because of changes in trends/patterns between data due to course of time. So we decided to find the best parameters on weekly basis and use them to run the pair strategy for next week. So technically every weeks parameters shifted to next week. Therefore for any given data set pre condition becomes it must be more than one week and ultimately we don't trade at all the very first week of any given trade.
 
-Second strategy we tried based on pair trading using average closing price spread and sds of returns based spread. In this additionally first week of each quarter we used to iterate over various values of m, volat.sd for both types of spread and calculated the best parameters based on highest SR ratio. We did this for each week and moved the time frame to next week. So first week generally there is no trade and following weeks based on last week best parameters pair trading was performed.
+#### Assumptions
 
-### Finally selected strategy for **group 1**
+-   **do not trade** first week of every quarter
 
-Finally for group 1 we selected pair trading with previous weeks best parameters used for running week.
 
-Sample parameters estimations for **2024 Quarter 2** (spread.name 1 (spread_avratio) and 2 (spread_sdsratio))
+-   **do not use in calculations** the data from the first and last 10 minutes of the session (`9:31-9:40` and `15:51-16:00`)
+
+-   do not hold positions overnight (**exit all positions** 20 minutes before the session end, i.e. at `15:40`),
+
+-   **do not trade** within the first 25 minutes of stocks quotations (`9:31-9:55`), but **DO use** the data for `9:41-9:55` in calculations of signal, volatility, etc.
+
+#### Parameters are
+
+-   spread.name = 1 (average mean ratio based spread) or 2 (sd ratio based spread).
+
+-   net.SR = net sharpe ratio based on net pnl.
+
+-   m = multipler to form upper and lower limits of signal.
+
+-   volat.sd = rolling volatility of spread based on 60, 90, 120, 150 or 180 minutes data.
+
+We calculated these parameters on daily basis and analysis them weekly basis to select the best one as per maximum net SR ratio and saved every Friday. Further we moved these parameters to next week Monday morning and filled the whole week as minute data.
+
+Sample parameters from 2024 Quarter 2 (in sample data) looks like
 
 ![best_parameters_2024_q2](images/best_parameters_2024_q2.png){width="70%"}
 
-### Group 1 - 2022 first quarter results
+#### Entry/exit technique
 
-+-------------+-----------+------------+-----------+--------------+------------+------------+
-| gross SR    | net SR    | gross CR   | net CR    | gross cumP&L | net cumP&L | av.ntrades |
-+=============+===========+============+===========+==============+============+============+
-| -0.05446243 | -1.335636 | -0.1013886 | -1.978189 | -577.28      | -14452.74  | 4.644068   |
-+-------------+-----------+------------+-----------+--------------+------------+------------+
+Every minutes, parameter "spread.name" type 1 or 2 based value used as signal, parameter "volat.sd" used to define rolling standard deviation of signal and finally multipled with +/- parameter "m" to get the upper and lower limit. If signal crosses the upper limit we go short and vice versa as mean reverting is applied.
 
-: matrix {.striped .hover}
+#### Strategy performance
 
-![g1_q1_2022](images/g1_q1_2022.png)
+Below graph represent net vs gross pnl for out of sample 2024 Q4.
 
-### Group 1 - 2022 third quarter results
+![g1_q4_2024](images/g1_q4_2024.png)
 
-+------------+------------+------------+-----------+--------------+------------+------------+
-| gross SR   | net SR     | gross CR   | net CR    | gross cumP&L | net cumP&L | av.ntrades |
-+============+============+============+===========+==============+============+============+
-| -0.2735316 | -0.8866143 | -0.5287689 | -1.530431 | -2837.795    | -9247.564  | 2.166667   |
-+------------+------------+------------+-----------+--------------+------------+------------+
-
-: matrix {.striped .hover}
-
-![g1_q1_2022](images/g1_q3_2022.png)
-
-### Group 1 - 2022 fourth quarter results
-
-+----------+----------+----------+---------+--------------+------------+------------+
-| gross SR | net SR   | gross CR | net CR  | gross cumP&L | net cumP&L | av.ntrades |
-+==========+==========+==========+=========+==============+============+============+
-| 3.779882 | 2.572602 | 12.44741 | 7.09879 | 22419.65     | 14865.49   | 2.666667   |
-+----------+----------+----------+---------+--------------+------------+------------+
-
-: matrix {.striped .hover}
-
-![g1_q1_2022](images/g1_q4_2022.png)
-
-### Group 1 - 2023 Second quarter results
-
-+----------+---------+----------+----------+--------------+------------+------------+
-| gross SR | net SR  | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
-+==========+=========+==========+==========+==============+============+============+
-| 6.971348 | 5.2925  | 44.56767 | 27.48605 | 53970.73     | 40750.74   | 4.3        |
-+----------+---------+----------+----------+--------------+------------+------------+
-
-: matrix {.striped .hover}
-
-![g1_q2_2023](images/g1_q2_2023.png)
-
-### Group 1 - 2023 fourth quarter results
-
-+------------+-----------+------------+----------+--------------+------------+------------+
-| gross SR   | net SR    | gross CR   | net CR   | gross cumP&L | net cumP&L | av.ntrades |
-+============+===========+============+==========+==============+============+============+
-| 3.77988163 | 2.5726020 | 12.4474066 | 7.098790 | 22419.653    | 14865.495  | 2.666667   |
-+------------+-----------+------------+----------+--------------+------------+------------+
-
-: matrix {.striped .hover}
-
-![g1_q4_2023](images/g1_q4_2023.png)
-
-### Group 1 - 2024 first quarter results
-
-+----------+-----------+----------+----------+--------------+------------+------------+
-| gross SR | net SR    | gross CR | net CR   | gross cumP&L | net cumP&L | av.ntrades |
-+==========+===========+==========+==========+==============+============+============+
-| 2.561474 | 0.8205267 | 4.890218 | 1.070789 | 12773.7      | 3430.214   | 2.866667   |
-+----------+-----------+----------+----------+--------------+------------+------------+
-
-: matrix {.striped .hover}
-
-![g1_q1_2024](images/g1_q1_2024.png)
-
-### Group 1 - 2024 second quarter results
-
-+-----------+------------+----------+-----------+--------------+------------+------------+
-| gross SR  | net SR     | gross CR | net CR    | gross cumP&L | net cumP&L | av.ntrades |
-+===========+============+==========+===========+==============+============+============+
-| 0.8397483 | -0.8141622 | 2.26682  | -1.552525 | 4840.637     | -4716.803  | 2.933333   |
-+-----------+------------+----------+-----------+--------------+------------+------------+
-
-: matrix {.striped .hover}
-
-![g1_q2_2024](images/g1_q2_2024.png)
-
-## Group 1 - 2022-2024 quarterly results
+### Group 1 - 2022-2024 quarterly results (out sample data)
 
 ```{r}
 # Read the CSV file
-data <- read.csv("final_results.csv")
+data <- read.csv("final_results_out_sample.csv")
 ```
 
 ```{r}
