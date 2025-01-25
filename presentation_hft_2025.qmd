@@ -4,16 +4,19 @@ author: "Nihad Alili (466258) & Vikram Bahadur (4666547)"
 editor: visual
 date: "`r Sys.Date()`"
 format: 
+  docx:
+    toc: true  # Include a table of contents
+    toc-depth: 3  # Specify the depth of the table of contents
   html:
     toc: true
     toc-depth: 3
     toc-location: left
     smooth-scroll: true
-    toc-title: Contents
+    toc-title: sandstone
     tbl-cap-location: bottom
     lof: true
     lot: true
-    theme: spacelab
+    theme: cosmo
     highlight: tango
     df-print: kable
     toc_float:
@@ -34,14 +37,13 @@ options(scipen = 10)
 
 ### Group 1 - Final Strategy - Pair Trading
 
-Considering the NASDAQ index future price and S&P 500 index future price represent the same returns on short/long run. If there is any change it should be temporary and should return back to earlier spread. So pair tradindin with mean reverting.
+Considering the NASDAQ index future price and S&P 500 index future price represent the same returns on short/long run. If there is any change it should be temporary and should return back to earlier spread. So pair tradindin with mean reverting looks promising.
 
 We used mean reverting pair trading using previous day average closing price ratio based spread and sds (standard deviation) ratios of returns based spread. Initially we tried different combination of entry/exit parameters and found that parameters those fit very well for particular dataset does not mean to fit significantly for the different data set. This because of changes in trends/patterns between data due to course of time. So we decided to find the best parameters on weekly basis and use them to run the pair strategy for next week. So technically every weeks parameters shifted to next week. Therefore for any given data set pre condition becomes it must be more than one week and ultimately we don't trade at all the very first week of any given trade.
 
-#### Assumptions
+#### **Assumptions**
 
 -   **do not trade** first week of every quarter
-
 
 -   **do not use in calculations** the data from the first and last 10 minutes of the session (`9:31-9:40` and `15:51-16:00`)
 
@@ -49,7 +51,7 @@ We used mean reverting pair trading using previous day average closing price rat
 
 -   **do not trade** within the first 25 minutes of stocks quotations (`9:31-9:55`), but **DO use** the data for `9:41-9:55` in calculations of signal, volatility, etc.
 
-#### Parameters are
+#### **Parameters are**
 
 -   spread.name = 1 (average mean ratio based spread) or 2 (sd ratio based spread).
 
@@ -65,24 +67,37 @@ Sample parameters from 2024 Quarter 2 (in sample data) looks like
 
 ![best_parameters_2024_q2](images/best_parameters_2024_q2.png){width="70%"}
 
-#### Entry/exit technique
+#### **Entry/exit technique**
 
 Every minutes, parameter "spread.name" type 1 or 2 based value used as signal, parameter "volat.sd" used to define rolling standard deviation of signal and finally multipled with +/- parameter "m" to get the upper and lower limit. If signal crosses the upper limit we go short and vice versa as mean reverting is applied.
 
-#### Strategy performance
+#### **Strategy performance**
 
 Below graph represent net vs gross pnl for out of sample 2024 Q4.
 
 ![g1_q4_2024](images/g1_q4_2024.png)
 
-### Group 1 - 2022-2024 quarterly results (out sample data)
+### Group 1 - 2022-2024 quarterly results (In sample data)
 
-```{r}
+```{r echo=FALSE}
+# Read the CSV file
+data <- read.csv("final_results.csv")
+```
+
+```{r echo=FALSE}
+# Display the table
+knitr::kable(data)
+
+```
+
+### Group 1 - 2022-2024 quarterly results (Out sample data)
+
+```{r echo=FALSE}
 # Read the CSV file
 data <- read.csv("final_results_out_sample.csv")
 ```
 
-```{r}
+```{r echo=FALSE}
 # Display the table
 knitr::kable(data)
 
@@ -92,9 +107,19 @@ knitr::kable(data)
 
 ### Group 2
 
+## Assumptions:
+
+-   Don't use the data in (9:31 - 9:40) and (15:51 - 16:00)
+
+-   LEAVE ALL POSITIONS before the break starts (16:45 - 18:15). In order to have less volatility we leave 15 minutes not 10 minutes.
+
+-   Ignore weekends positions since the market is closed (Fri, 16:00 - Sun, 18:00)
+
 We used the different strategies including and excluding some assets. First of all, we tried based on pair trading using average closing price spread and standard deviation of returns based on spread dividing pairs by currencies(CAD&AUD) and metals(XAU&XAG). The results were not satisfactory.
 
-Secondly, from fundamental perspective, we decided to omit CAD since It has positive relationship with USD which has negative relationship with XAU and It has similar trend pattern with AUD. In our strategy, we used momentum approach using 30 and 90 SMA for AUD and pair of XAU&XAG.
+Secondly, we used mean-reversion volatility breakout strategy using AUD and pair of commodities XAU&XAG. In AUD, we found best strategy using intersection of fast 30 SMA and 90 slow SMA and 100 volatility memory as a breakout and also multiplier of 1.25. In XAU&XAG, we used spread = XAU - XAG \* mean (XAU/XAG) with parameters as 120 window standard deviation and 0.9 upper and lower threshold multipliers.
+
+CAD has similar patterns with AUD but cointegration between these two assets was detected rarely, so It made it useless to probe a new strategy using these currencies. That is why we dropped CAD in our strategy in order to minimize the risk.
 
 ### Group 2- 2022 first quarter results
 
@@ -182,11 +207,103 @@ In the fiurth quarter of 2023, our strategy was successfull with 2.0388 stat val
 
 ## Group 2 - 2022-2024 quarterly results
 
-```{r}
+```{r echo=FALSE}
 data1 <- read.csv("quarter_stats.all.group2.csv")
 ```
 
-```{r}
+```{r echo=FALSE}
 #| echo: false
 data1
 ```
+
+## 
+
+# Group 2 - out of sample data, strategy checking
+
+In our strategy, we used mean-reversion volatility breakout strategy using AUD and pair of commodities XAU&XAG. In AUD, we found best strategy using intersection of fast 30 SMA and 90 slow SMA and 100 volatility memory as a breakout and also multiplier of 1.25. In XAU&XAG, we used spread = XAU - XAG \* mean (XAU/XAG) with parameters as 120 window standard deviation with 0.9 upper and lower threshold multipliers.
+
+CAD has similar patterns with AUD but cointegration between these two assets was detected rarely, so It made it useless to probe a new strategy using these currencies. That is why we dropped CAD in our strategy in order to minimize the risk. In our sample, we got 4 positive and 3 negative PnL, which made it actually high risky profitable strategy.
+
+In out of sample data, we evaluated our strategy in 5 quarters and 2 quarter PnL resulted negatively and 3 quarters resulted positvely.
+
+## Goup 2 - 2022 second quarter results
+
++---------+--------+---------+--------+------------------+-------------+-------------+---------+
+| grossSR | netSR  | grossCR | netCR  | av_daily_ntrades | grossPnL    | netPnL      | stat    |
++=========+========+=========+========+==================+=============+=============+=========+
+| 1.4568  | 1.2215 | 2.9196  | 2.3933 | 4.5543           | 980965.6977 | 817158.5127 | 16.0489 |
++---------+--------+---------+--------+------------------+-------------+-------------+---------+
+
+## 
+
+![](images/pnl_group2_2022_Q2.png)
+
+Strategy performs well, with strong risk-adjusted metrics (Sharpe and Calmar Ratios) and substantial profitability. The graph clearly demonstrates a consistent upward trajectory for both gross and net PnL, with close alignment indicating efficient trade execution and manageable costs. While there are some drawdowns (notably mid-May), the recovery is swift, reflecting the profit.
+
+## Group 2 - 2023 first quarter results
+
++---------+---------+---------+---------+------------------+--------------+--------------+---------+
+| grossSR | netSR   | grossCR | netCR   | av_daily_ntrades | grossPnL     | netPnL       | stat    |
++=========+=========+=========+=========+==================+==============+==============+=========+
+| -0.0603 | -0.2962 | -0.1019 | -0.4712 | 5.2197           | -487751.5231 | -238117.2248 | -2.5788 |
++---------+---------+---------+---------+------------------+--------------+--------------+---------+
+
+![](images/pnl_group2_2023_Q1.png)
+
+The strategy performed poorly during Q1 2023, as indicated by negative metrics across Sharpe Ratio, Calmar Ratio, and PnL. The graph sustains losses, significant drawdowns, and only minimal recoveries. The increased number of trades (higher daily activity) contribute to inefficiency, increasing costs and eroding profitability as a result.
+
+## Group 2 - 2023 third quarter
+
++---------+--------+---------+--------+------------------+-------------+-------------+--------+
+| grossSR | netSR  | grossCR | netCR  | av_daily_ntrades | grossPnL    | netPnL      | stat   |
++=========+========+=========+========+==================+=============+=============+========+
+| 0.5604  | 0.2986 | 0.7815  | 0.4037 | 4.9670           | 372440.7214 | 197466.0342 | 2.1034 |
++---------+--------+---------+--------+------------------+-------------+-------------+--------+
+
+![](images/pnl_group2_2023_Q3.png)
+
+The graph shows strong upward trends in July and late September, with significant drawdowns in late August and early September. The Sharpe Ratio (gross: 0.5604, net: 0.2986) reflects modest risk-adjusted returns, with some impact from costs. Similarly, the Calmar Ratio (gross: 0.7815, net: 0.4037) indicates moderate recovery, though costs slightly hinder overall performance.
+
+## Group 2 - 2024 third quarter
+
++---------+---------+---------+---------+------------------+---------------+---------------+----------+
+| grossSR | netSR   | grossCR | netCR   | av_daily_ntrades | grossPnL      | netPnL        | stat     |
++=========+=========+=========+=========+==================+===============+===============+==========+
+| -1.1797 | -1.3948 | -1.5367 | -2.4594 | 4.5483           | -1325203.9319 | -1407277.3191 | -11.9321 |
++---------+---------+---------+---------+------------------+---------------+---------------+----------+
+
+![](images/pnl_group2_2024_Q3.png)
+
+The graph shows a downward trend overall, with minor recoveries in mid-July and late August, followed by steep declines in early September and late September. The Sharpe Ratio (gross: -1.1797, net: -1.3948) indicates negative risk-adjusted returns, suggesting the strategy consistently underperformed relative to its volatility. The Calmar Ratio (gross: -1.5367, net: -2.4594) further reflects significant drawdowns and poor recovery ability.
+
+## Group 2 - 2024 fourth quarter
+
++---------+--------+---------+--------+------------------+-------------+-------------+--------+
+| grossSR | netSR  | grossCR | netCR  | av_daily_ntrades | grossPnL    | netPnL      | stat   |
++=========+========+=========+========+==================+=============+=============+========+
+| 0.3820  | 0.2320 | 0.7983  | 0.4646 | 4.2903           | 383461.0424 | 232221.0142 | 2.5308 |
++---------+--------+---------+--------+------------------+-------------+-------------+--------+
+
+![](images/pnl_group2_2024_Q4.png)
+
+The graph for Q4 2024 shows a significant improvement in performance compared to the previous quarter, with steady growth overall and recovery from drawdowns. Peaks are evident in late November and late December, while drawdowns occur around mid-October and early December. The Sharpe Ratio (gross: 0.3820, net: 0.2320) reflects modest but positive risk-adjusted returns, indicating improved profitability relative to volatility. The Calmar Ratio (gross: 0.7983, net: 0.4646) highlights better drawdown recovery and resilience.
+
+## Group 2 - Summary
+
++---------+---------+---------+---------+---------+------------------+---------------+---------------+----------+
+| quarter | grossSR | netSR   | grossCR | netCR   | av_daily_ntrades | grossPnL      | netPnL        | stat     |
++=========+=========+=========+=========+=========+==================+===============+===============+==========+
+| 2022_Q2 | 1.4568  | 1.2215  | 2.9196  | 2.3933  | 4.5543           | 980965.6977   | 817158.5127   | 16.0489  |
++---------+---------+---------+---------+---------+------------------+---------------+---------------+----------+
+| 2023_Q1 | -0.0603 | -0.2962 | -0.1019 | -0.4712 | 5.2197           | -487751.5231  | -238117.2248  | -2.5788  |
++---------+---------+---------+---------+---------+------------------+---------------+---------------+----------+
+| 2023_Q3 | 0.5604  | 0.2986  | 0.7815  | 0.4037  | 4.9670           | 372440.7214   | 197466.0342   | 2.1034   |
++---------+---------+---------+---------+---------+------------------+---------------+---------------+----------+
+| 2024_Q3 | -1.1797 | -1.3948 | -1.5367 | -2.4594 | 4.5483           | -1325203.9319 | -1407277.3191 | -11.9321 |
++---------+---------+---------+---------+---------+------------------+---------------+---------------+----------+
+| 2024_Q4 | 0.3820  | 0.2320  | 0.7983  | 0.4646  | 4.2903           | 383461.0424   | 232221.0142   | 2.5308   |
++---------+---------+---------+---------+---------+------------------+---------------+---------------+----------+
+
+The strategy shows strong potential in favorable quarters, such as the second quarters of 2022 and 2023, 2024 with high risk-adjusted returns and effective recovery from drawdowns, indicating consistent profitability and efficient cost management. However, it suffers from significant underperformance in challenging periods, like the third quarter of 2024, where large drawdowns and poor recovery heavily impacted profitability. Morever, sign of gross and net PnL and number of transaction in all quarters shows that all loss is contributed by stategy performance not high transaction cost.
+
+The fluctuations reveal a high sensitivity to market conditions, suggesting that the strategy may depend on specific dynamics for success.

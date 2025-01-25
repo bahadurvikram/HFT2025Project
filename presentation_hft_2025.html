@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Nihad Alili (466258) &amp; Vikram Bahadur (4666547)">
-<meta name="dcterms.date" content="2025-01-22">
+<meta name="dcterms.date" content="2025-01-25">
 
 <title>Quantitative strategies on High Frequency Data - 2025</title>
 <style>
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -79,14 +45,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
 <div id="quarto-sidebar-toc-left" class="sidebar toc-left">
   <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Contents</h2>
+    <h2 id="toc-title">sandstone</h2>
    
   <ul>
   <li><a href="#group-1---final-strategy---pair-trading" id="toc-group-1---final-strategy---pair-trading" class="nav-link active" data-scroll-target="#group-1---final-strategy---pair-trading">Group 1 - Final Strategy - Pair Trading</a></li>
-  <li><a href="#group-1---2022-2024-quarterly-results-out-sample-data" id="toc-group-1---2022-2024-quarterly-results-out-sample-data" class="nav-link" data-scroll-target="#group-1---2022-2024-quarterly-results-out-sample-data">Group 1 - 2022-2024 quarterly results (out sample data)</a></li>
+  <li><a href="#group-1---2022-2024-quarterly-results-in-sample-data" id="toc-group-1---2022-2024-quarterly-results-in-sample-data" class="nav-link" data-scroll-target="#group-1---2022-2024-quarterly-results-in-sample-data">Group 1 - 2022-2024 quarterly results (In sample data)</a></li>
+  <li><a href="#group-1---2022-2024-quarterly-results-out-sample-data" id="toc-group-1---2022-2024-quarterly-results-out-sample-data" class="nav-link" data-scroll-target="#group-1---2022-2024-quarterly-results-out-sample-data">Group 1 - 2022-2024 quarterly results (Out sample data)</a></li>
   <li><a href="#approaches-undertaken" id="toc-approaches-undertaken" class="nav-link" data-scroll-target="#approaches-undertaken">Approaches undertaken</a>
   <ul class="collapse">
   <li><a href="#group-2" id="toc-group-2" class="nav-link" data-scroll-target="#group-2">Group 2</a></li>
+  </ul></li>
+  <li><a href="#assumptions-1" id="toc-assumptions-1" class="nav-link" data-scroll-target="#assumptions-1">Assumptions:</a>
+  <ul class="collapse">
   <li><a href="#group-2--2022-first-quarter-results" id="toc-group-2--2022-first-quarter-results" class="nav-link" data-scroll-target="#group-2--2022-first-quarter-results">Group 2- 2022 first quarter results</a></li>
   <li><a href="#group-2---2022-third-quarter-results" id="toc-group-2---2022-third-quarter-results" class="nav-link" data-scroll-target="#group-2---2022-third-quarter-results">Group 2 - 2022 third quarter results</a></li>
   <li><a href="#group-2---2022-fourth-quarter-results" id="toc-group-2---2022-fourth-quarter-results" class="nav-link" data-scroll-target="#group-2---2022-fourth-quarter-results">Group 2 - 2022 fourth quarter results</a></li>
@@ -96,6 +66,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#group-2---2024-second-quarter-results" id="toc-group-2---2024-second-quarter-results" class="nav-link" data-scroll-target="#group-2---2024-second-quarter-results">Group 2 - 2024 Second quarter results</a></li>
   </ul></li>
   <li><a href="#group-2---2022-2024-quarterly-results" id="toc-group-2---2022-2024-quarterly-results" class="nav-link" data-scroll-target="#group-2---2022-2024-quarterly-results">Group 2 - 2022-2024 quarterly results</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#group-2---out-of-sample-data-strategy-checking" id="toc-group-2---out-of-sample-data-strategy-checking" class="nav-link" data-scroll-target="#group-2---out-of-sample-data-strategy-checking">Group 2 - out of sample data, strategy checking</a>
+  <ul class="collapse">
+  <li><a href="#goup-2---2022-second-quarter-results" id="toc-goup-2---2022-second-quarter-results" class="nav-link" data-scroll-target="#goup-2---2022-second-quarter-results">Goup 2 - 2022 second quarter results</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
+  <li><a href="#group-2---2023-first-quarter-results" id="toc-group-2---2023-first-quarter-results" class="nav-link" data-scroll-target="#group-2---2023-first-quarter-results">Group 2 - 2023 first quarter results</a></li>
+  <li><a href="#group-2---2023-third-quarter" id="toc-group-2---2023-third-quarter" class="nav-link" data-scroll-target="#group-2---2023-third-quarter">Group 2 - 2023 third quarter</a></li>
+  <li><a href="#group-2---2024-third-quarter" id="toc-group-2---2024-third-quarter" class="nav-link" data-scroll-target="#group-2---2024-third-quarter">Group 2 - 2024 third quarter</a></li>
+  <li><a href="#group-2---2024-fourth-quarter" id="toc-group-2---2024-fourth-quarter" class="nav-link" data-scroll-target="#group-2---2024-fourth-quarter">Group 2 - 2024 fourth quarter</a></li>
+  <li><a href="#group-2---summary" id="toc-group-2---summary" class="nav-link" data-scroll-target="#group-2---summary">Group 2 - Summary</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -122,7 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 22, 2025</p>
+      <p class="date">January 25, 2025</p>
     </div>
   </div>
   
@@ -134,10 +115,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="group-1---final-strategy---pair-trading" class="level3">
 <h3 class="anchored" data-anchor-id="group-1---final-strategy---pair-trading">Group 1 - Final Strategy - Pair Trading</h3>
-<p>Considering the NASDAQ index future price and S&amp;P 500 index future price represent the same returns on short/long run. If there is any change it should be temporary and should return back to earlier spread. So pair tradindin with mean reverting.</p>
+<p>Considering the NASDAQ index future price and S&amp;P 500 index future price represent the same returns on short/long run. If there is any change it should be temporary and should return back to earlier spread. So pair tradindin with mean reverting looks promising.</p>
 <p>We used mean reverting pair trading using previous day average closing price ratio based spread and sds (standard deviation) ratios of returns based spread. Initially we tried different combination of entry/exit parameters and found that parameters those fit very well for particular dataset does not mean to fit significantly for the different data set. This because of changes in trends/patterns between data due to course of time. So we decided to find the best parameters on weekly basis and use them to run the pair strategy for next week. So technically every weeks parameters shifted to next week. Therefore for any given data set pre condition becomes it must be more than one week and ultimately we don’t trade at all the very first week of any given trade.</p>
 <section id="assumptions" class="level4">
-<h4 class="anchored" data-anchor-id="assumptions">Assumptions</h4>
+<h4 class="anchored" data-anchor-id="assumptions"><strong>Assumptions</strong></h4>
 <ul>
 <li><p><strong>do not trade</strong> first week of every quarter</p></li>
 <li><p><strong>do not use in calculations</strong>&nbsp;the data from the first and last 10 minutes of the session (<code>9:31-9:40</code>&nbsp;and&nbsp;<code>15:51-16:00</code>)</p></li>
@@ -146,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 <section id="parameters-are" class="level4">
-<h4 class="anchored" data-anchor-id="parameters-are">Parameters are</h4>
+<h4 class="anchored" data-anchor-id="parameters-are"><strong>Parameters are</strong></h4>
 <ul>
 <li><p>spread.name = 1 (average mean ratio based spread) or 2 (sd ratio based spread).</p></li>
 <li><p>net.SR = net sharpe ratio based on net pnl.</p></li>
@@ -163,11 +144,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="entryexit-technique" class="level4">
-<h4 class="anchored" data-anchor-id="entryexit-technique">Entry/exit technique</h4>
+<h4 class="anchored" data-anchor-id="entryexit-technique"><strong>Entry/exit technique</strong></h4>
 <p>Every minutes, parameter “spread.name” type 1 or 2 based value used as signal, parameter “volat.sd” used to define rolling standard deviation of signal and finally multipled with +/- parameter “m” to get the upper and lower limit. If signal crosses the upper limit we go short and vice versa as mean reverting is applied.</p>
 </section>
 <section id="strategy-performance" class="level4">
-<h4 class="anchored" data-anchor-id="strategy-performance">Strategy performance</h4>
+<h4 class="anchored" data-anchor-id="strategy-performance"><strong>Strategy performance</strong></h4>
 <p>Below graph represent net vs gross pnl for out of sample 2024 Q4.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -177,15 +158,130 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="group-1---2022-2024-quarterly-results-out-sample-data" class="level3">
-<h3 class="anchored" data-anchor-id="group-1---2022-2024-quarterly-results-out-sample-data">Group 1 - 2022-2024 quarterly results (out sample data)</h3>
+<section id="group-1---2022-2024-quarterly-results-in-sample-data" class="level3">
+<h3 class="anchored" data-anchor-id="group-1---2022-2024-quarterly-results-in-sample-data">Group 1 - 2022-2024 quarterly results (In sample data)</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the CSV file</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"final_results_out_sample.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X</th>
+<th style="text-align: left;">Quarter.Name</th>
+<th style="text-align: right;">Gross.SR</th>
+<th style="text-align: right;">Net.SR</th>
+<th style="text-align: right;">Gross.CR</th>
+<th style="text-align: right;">Net.CR</th>
+<th style="text-align: right;">Gross.cumP.L</th>
+<th style="text-align: right;">Net.cumP.L</th>
+<th style="text-align: right;">Av.ntrades</th>
+<th style="text-align: right;">Stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2022_Q1</td>
+<td style="text-align: right;">-0.0544624</td>
+<td style="text-align: right;">-1.3356356</td>
+<td style="text-align: right;">-0.1013886</td>
+<td style="text-align: right;">-1.978188</td>
+<td style="text-align: right;">-577.280</td>
+<td style="text-align: right;">-14452.735</td>
+<td style="text-align: right;">4.644068</td>
+<td style="text-align: right;">-5.283512</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2022_Q3</td>
+<td style="text-align: right;">-0.2735316</td>
+<td style="text-align: right;">-0.8866143</td>
+<td style="text-align: right;">-0.5287689</td>
+<td style="text-align: right;">-1.530431</td>
+<td style="text-align: right;">-2837.795</td>
+<td style="text-align: right;">-9247.564</td>
+<td style="text-align: right;">2.166667</td>
+<td style="text-align: right;">-3.404230</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2022_Q4</td>
+<td style="text-align: right;">3.7798816</td>
+<td style="text-align: right;">2.5726020</td>
+<td style="text-align: right;">12.4474066</td>
+<td style="text-align: right;">7.098790</td>
+<td style="text-align: right;">22419.653</td>
+<td style="text-align: right;">14865.495</td>
+<td style="text-align: right;">2.666667</td>
+<td style="text-align: right;">19.159937</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">2023_Q2</td>
+<td style="text-align: right;">6.9713478</td>
+<td style="text-align: right;">5.2925002</td>
+<td style="text-align: right;">44.5676697</td>
+<td style="text-align: right;">27.486047</td>
+<td style="text-align: right;">53970.728</td>
+<td style="text-align: right;">40750.735</td>
+<td style="text-align: right;">4.300000</td>
+<td style="text-align: right;">101.903802</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">2023_Q4</td>
+<td style="text-align: right;">4.2290601</td>
+<td style="text-align: right;">2.8969007</td>
+<td style="text-align: right;">27.1422746</td>
+<td style="text-align: right;">14.412131</td>
+<td style="text-align: right;">22088.172</td>
+<td style="text-align: right;">14856.988</td>
+<td style="text-align: right;">2.271186</td>
+<td style="text-align: right;">38.890707</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">2024_Q1</td>
+<td style="text-align: right;">2.5614741</td>
+<td style="text-align: right;">0.8205267</td>
+<td style="text-align: right;">4.8902179</td>
+<td style="text-align: right;">1.070790</td>
+<td style="text-align: right;">12773.703</td>
+<td style="text-align: right;">3430.214</td>
+<td style="text-align: right;">2.866667</td>
+<td style="text-align: right;">1.319879</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">2024_Q2</td>
+<td style="text-align: right;">0.8397483</td>
+<td style="text-align: right;">-0.8141622</td>
+<td style="text-align: right;">2.2668195</td>
+<td style="text-align: right;">-1.552525</td>
+<td style="text-align: right;">4840.637</td>
+<td style="text-align: right;">-4716.803</td>
+<td style="text-align: right;">2.933333</td>
+<td style="text-align: right;">-2.408170</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+</section>
+<section id="group-1---2022-2024-quarterly-results-out-sample-data" class="level3">
+<h3 class="anchored" data-anchor-id="group-1---2022-2024-quarterly-results-out-sample-data">Group 1 - 2022-2024 quarterly results (Out sample data)</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the table</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -284,9 +380,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="approaches-undertaken">Approaches undertaken</h2>
 <section id="group-2" class="level3">
 <h3 class="anchored" data-anchor-id="group-2">Group 2</h3>
-<p>We used the different strategies including and excluding some assets. First of all, we tried based on pair trading using average closing price spread and standard deviation of returns based on spread dividing pairs by currencies(CAD&amp;AUD) and metals(XAU&amp;XAG). The results were not satisfactory.</p>
-<p>Secondly, from fundamental perspective, we decided to omit CAD since It has positive relationship with USD which has negative relationship with XAU and It has similar trend pattern with AUD. In our strategy, we used momentum approach using 30 and 90 SMA for AUD and pair of XAU&amp;XAG.</p>
 </section>
+</section>
+<section id="assumptions-1" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions-1">Assumptions:</h2>
+<ul>
+<li><p>Don’t use the data in (9:31 - 9:40) and (15:51 - 16:00)</p></li>
+<li><p>LEAVE ALL POSITIONS before the break starts (16:45 - 18:15). In order to have less volatility we leave 15 minutes not 10 minutes.</p></li>
+<li><p>Ignore weekends positions since the market is closed (Fri, 16:00 - Sun, 18:00)</p></li>
+</ul>
+<p>We used the different strategies including and excluding some assets. First of all, we tried based on pair trading using average closing price spread and standard deviation of returns based on spread dividing pairs by currencies(CAD&amp;AUD) and metals(XAU&amp;XAG). The results were not satisfactory.</p>
+<p>Secondly, we used mean-reversion volatility breakout strategy using AUD and pair of commodities XAU&amp;XAG. In AUD, we found best strategy using intersection of fast 30 SMA and 90 slow SMA and 100 volatility memory as a breakout and also multiplier of 1.25. In XAU&amp;XAG, we used spread = XAU - XAG * mean (XAU/XAG) with parameters as 120 window standard deviation and 0.9 upper and lower threshold multipliers.</p>
+<p>CAD has similar patterns with AUD but cointegration between these two assets was detected rarely, so It made it useless to probe a new strategy using these currencies. That is why we dropped CAD in our strategy in order to minimize the risk.</p>
 <section id="group-2--2022-first-quarter-results" class="level3">
 <h3 class="anchored" data-anchor-id="group-2--2022-first-quarter-results">Group 2- 2022 first quarter results</h3>
 <table class="table">
@@ -574,9 +679,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="group-2---2022-2024-quarterly-results" class="level2">
 <h2 class="anchored" data-anchor-id="group-2---2022-2024-quarterly-results">Group 2 - 2022-2024 quarterly results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"quarter_stats.all.group2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="table table-sm table-striped small">
@@ -696,6 +798,311 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="group-2---out-of-sample-data-strategy-checking" class="level1">
+<h1>Group 2 - out of sample data, strategy checking</h1>
+<p>In our strategy, we used mean-reversion volatility breakout strategy using AUD and pair of commodities XAU&amp;XAG. In AUD, we found best strategy using intersection of fast 30 SMA and 90 slow SMA and 100 volatility memory as a breakout and also multiplier of 1.25. In XAU&amp;XAG, we used spread = XAU - XAG * mean (XAU/XAG) with parameters as 120 window standard deviation with 0.9 upper and lower threshold multipliers.</p>
+<p>CAD has similar patterns with AUD but cointegration between these two assets was detected rarely, so It made it useless to probe a new strategy using these currencies. That is why we dropped CAD in our strategy in order to minimize the risk. In our sample, we got 4 positive and 3 negative PnL, which made it actually high risky profitable strategy.</p>
+<p>In out of sample data, we evaluated our strategy in 5 quarters and 2 quarter PnL resulted negatively and 3 quarters resulted positvely.</p>
+<section id="goup-2---2022-second-quarter-results" class="level2">
+<h2 class="anchored" data-anchor-id="goup-2---2022-second-quarter-results">Goup 2 - 2022 second quarter results</h2>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>grossSR</th>
+<th>netSR</th>
+<th>grossCR</th>
+<th>netCR</th>
+<th>av_daily_ntrades</th>
+<th>grossPnL</th>
+<th>netPnL</th>
+<th>stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.4568</td>
+<td>1.2215</td>
+<td>2.9196</td>
+<td>2.3933</td>
+<td>4.5543</td>
+<td>980965.6977</td>
+<td>817158.5127</td>
+<td>16.0489</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1"></h2>
+<p><img src="images/pnl_group2_2022_Q2.png" class="img-fluid"></p>
+<p>Strategy performs well, with strong risk-adjusted metrics (Sharpe and Calmar Ratios) and substantial profitability. The graph clearly demonstrates a consistent upward trajectory for both gross and net PnL, with close alignment indicating efficient trade execution and manageable costs. While there are some drawdowns (notably mid-May), the recovery is swift, reflecting the profit.</p>
+</section>
+<section id="group-2---2023-first-quarter-results" class="level2">
+<h2 class="anchored" data-anchor-id="group-2---2023-first-quarter-results">Group 2 - 2023 first quarter results</h2>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 18%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>grossSR</th>
+<th>netSR</th>
+<th>grossCR</th>
+<th>netCR</th>
+<th>av_daily_ntrades</th>
+<th>grossPnL</th>
+<th>netPnL</th>
+<th>stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-0.0603</td>
+<td>-0.2962</td>
+<td>-0.1019</td>
+<td>-0.4712</td>
+<td>5.2197</td>
+<td>-487751.5231</td>
+<td>-238117.2248</td>
+<td>-2.5788</td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/pnl_group2_2023_Q1.png" class="img-fluid"></p>
+<p>The strategy performed poorly during Q1 2023, as indicated by negative metrics across Sharpe Ratio, Calmar Ratio, and PnL. The graph sustains losses, significant drawdowns, and only minimal recoveries. The increased number of trades (higher daily activity) contribute to inefficiency, increasing costs and eroding profitability as a result.</p>
+</section>
+<section id="group-2---2023-third-quarter" class="level2">
+<h2 class="anchored" data-anchor-id="group-2---2023-third-quarter">Group 2 - 2023 third quarter</h2>
+<table class="table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 19%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>grossSR</th>
+<th>netSR</th>
+<th>grossCR</th>
+<th>netCR</th>
+<th>av_daily_ntrades</th>
+<th>grossPnL</th>
+<th>netPnL</th>
+<th>stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.5604</td>
+<td>0.2986</td>
+<td>0.7815</td>
+<td>0.4037</td>
+<td>4.9670</td>
+<td>372440.7214</td>
+<td>197466.0342</td>
+<td>2.1034</td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/pnl_group2_2023_Q3.png" class="img-fluid"></p>
+<p>The graph shows strong upward trends in July and late September, with significant drawdowns in late August and early September. The Sharpe Ratio (gross: 0.5604, net: 0.2986) reflects modest risk-adjusted returns, with some impact from costs. Similarly, the Calmar Ratio (gross: 0.7815, net: 0.4037) indicates moderate recovery, though costs slightly hinder overall performance.</p>
+</section>
+<section id="group-2---2024-third-quarter" class="level2">
+<h2 class="anchored" data-anchor-id="group-2---2024-third-quarter">Group 2 - 2024 third quarter</h2>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>grossSR</th>
+<th>netSR</th>
+<th>grossCR</th>
+<th>netCR</th>
+<th>av_daily_ntrades</th>
+<th>grossPnL</th>
+<th>netPnL</th>
+<th>stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-1.1797</td>
+<td>-1.3948</td>
+<td>-1.5367</td>
+<td>-2.4594</td>
+<td>4.5483</td>
+<td>-1325203.9319</td>
+<td>-1407277.3191</td>
+<td>-11.9321</td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/pnl_group2_2024_Q3.png" class="img-fluid"></p>
+<p>The graph shows a downward trend overall, with minor recoveries in mid-July and late August, followed by steep declines in early September and late September. The Sharpe Ratio (gross: -1.1797, net: -1.3948) indicates negative risk-adjusted returns, suggesting the strategy consistently underperformed relative to its volatility. The Calmar Ratio (gross: -1.5367, net: -2.4594) further reflects significant drawdowns and poor recovery ability.</p>
+</section>
+<section id="group-2---2024-fourth-quarter" class="level2">
+<h2 class="anchored" data-anchor-id="group-2---2024-fourth-quarter">Group 2 - 2024 fourth quarter</h2>
+<table class="table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 19%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>grossSR</th>
+<th>netSR</th>
+<th>grossCR</th>
+<th>netCR</th>
+<th>av_daily_ntrades</th>
+<th>grossPnL</th>
+<th>netPnL</th>
+<th>stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.3820</td>
+<td>0.2320</td>
+<td>0.7983</td>
+<td>0.4646</td>
+<td>4.2903</td>
+<td>383461.0424</td>
+<td>232221.0142</td>
+<td>2.5308</td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/pnl_group2_2024_Q4.png" class="img-fluid"></p>
+<p>The graph for Q4 2024 shows a significant improvement in performance compared to the previous quarter, with steady growth overall and recovery from drawdowns. Peaks are evident in late November and late December, while drawdowns occur around mid-October and early December. The Sharpe Ratio (gross: 0.3820, net: 0.2320) reflects modest but positive risk-adjusted returns, indicating improved profitability relative to volatility. The Calmar Ratio (gross: 0.7983, net: 0.4646) highlights better drawdown recovery and resilience.</p>
+</section>
+<section id="group-2---summary" class="level2">
+<h2 class="anchored" data-anchor-id="group-2---summary">Group 2 - Summary</h2>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>quarter</th>
+<th>grossSR</th>
+<th>netSR</th>
+<th>grossCR</th>
+<th>netCR</th>
+<th>av_daily_ntrades</th>
+<th>grossPnL</th>
+<th>netPnL</th>
+<th>stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2022_Q2</td>
+<td>1.4568</td>
+<td>1.2215</td>
+<td>2.9196</td>
+<td>2.3933</td>
+<td>4.5543</td>
+<td>980965.6977</td>
+<td>817158.5127</td>
+<td>16.0489</td>
+</tr>
+<tr class="even">
+<td>2023_Q1</td>
+<td>-0.0603</td>
+<td>-0.2962</td>
+<td>-0.1019</td>
+<td>-0.4712</td>
+<td>5.2197</td>
+<td>-487751.5231</td>
+<td>-238117.2248</td>
+<td>-2.5788</td>
+</tr>
+<tr class="odd">
+<td>2023_Q3</td>
+<td>0.5604</td>
+<td>0.2986</td>
+<td>0.7815</td>
+<td>0.4037</td>
+<td>4.9670</td>
+<td>372440.7214</td>
+<td>197466.0342</td>
+<td>2.1034</td>
+</tr>
+<tr class="even">
+<td>2024_Q3</td>
+<td>-1.1797</td>
+<td>-1.3948</td>
+<td>-1.5367</td>
+<td>-2.4594</td>
+<td>4.5483</td>
+<td>-1325203.9319</td>
+<td>-1407277.3191</td>
+<td>-11.9321</td>
+</tr>
+<tr class="odd">
+<td>2024_Q4</td>
+<td>0.3820</td>
+<td>0.2320</td>
+<td>0.7983</td>
+<td>0.4646</td>
+<td>4.2903</td>
+<td>383461.0424</td>
+<td>232221.0142</td>
+<td>2.5308</td>
+</tr>
+</tbody>
+</table>
+<p>The strategy shows strong potential in favorable quarters, such as the second quarters of 2022 and 2023, 2024 with high risk-adjusted returns and effective recovery from drawdowns, indicating consistent profitability and efficient cost management. However, it suffers from significant underperformance in challenging periods, like the third quarter of 2024, where large drawdowns and poor recovery heavily impacted profitability. Morever, sign of gross and net PnL and number of transaction in all quarters shows that all loss is contributed by stategy performance not high transaction cost.</p>
+<p>The fluctuations reveal a high sensitivity to market conditions, suggesting that the strategy may depend on specific dynamics for success.</p>
+</section>
 </section>
 
 </main>
